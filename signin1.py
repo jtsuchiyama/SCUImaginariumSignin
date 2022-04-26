@@ -1,10 +1,29 @@
 import requests
 
-def send_attendance(url, data):
+def parse_headers(text):
+    # Init dictionary
+    headers = {}
+
+    # Loop through lines
+    for line in text.split("\n"):
+        # Split field name and value up so they can be assigned
+        header = line.split(": ")
+
+        if len(header) < 2:
+            continue # no ": ", so it's probably just an empty line
+        elif len(header) > 2:
+            print("Help!") # This shouldn't happen
+        else:
+            headers[header[0]] = header[1]
+
+    return headers
+
+def send_attendance(url, data, header_text):
     """It takes google form url which is to be submitted and also data which is a list of data to be submitted in the form iteratively."""
 
     try:
-        r = requests.post(url, data)
+        headers = parse_headers(header_text)
+        r = requests.post(url, data=data, headers=headers)
         print(r.status_code)
         print("Form Submitted.")
     except:
@@ -13,39 +32,12 @@ def send_attendance(url, data):
 #url = 'https://docs.google.com/forms/d/e/1FAIpQLSeNP1YoUEjgucQggxYWmVPVeHMBmTuBA3FKRijpuJXvjMfn5Q/viewform'
 url = 'https://docs.google.com/forms/d/e/1FAIpQLSfq-NpCCUbVG6HrwUkTOmNv8J2gcsUYTW_3Wa0PObjezsMAmg/formResponse'
 
-values = {
-            # What is your full name? 
-            # or 278721327
-            #"entry.1264666384": "Jake Tsuchiyama",
+data = {
+    "entry.321941539": "Yes",
+}
 
-            # I am a...
-            # or 1660567039
-            #"entry.1268903977": "Undergraduate Student",
+header_text = '''
+entry.321941539: Yes
+'''
 
-            # What college are you in?
-            # or 1997944194
-            #"entry.1795708489": "School of Engineering",
-
-            # What is/are your majors(s)?
-            # or 1222822512
-            #"entry.536694640": "COEN",
-
-            # Main Purpose of visit (Specify other projects)
-            # or 2138302888
-            #"entry.1078672043": "Imaginet (Guild System)",
-
-            # Expected duration of visit
-            # or 348582369
-            #"entry.1825447454": "1-3 hours",
-
-            # What areas are you interested in?
-            # or 1194417129
-            #"entry.677187119": "Game Design",
-
-            #"emailAddress": "jtsuchiyama@scu.edu",
-
-            "entry.321941539": "Yes",
-            #"entry.321941539": "Yes",
-        }
-
-send_attendance(url, values)
+send_attendance(url, data, header_text)
