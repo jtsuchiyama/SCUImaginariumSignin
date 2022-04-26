@@ -1,5 +1,17 @@
 import requests
-import time
+
+def send_attendance(url, data):
+    """It takes google form url which is to be submitted and also data which is a list of data to be submitted in the form iteratively."""
+
+    try:
+        r = requests.post(url, data)
+        print(r.status_code)
+        print("Form Submitted.")
+    except:
+        print("Error Occured!")
+
+#url = 'https://docs.google.com/forms/d/e/1FAIpQLSeNP1YoUEjgucQggxYWmVPVeHMBmTuBA3FKRijpuJXvjMfn5Q/viewform'
+url = 'https://docs.google.com/forms/d/e/1FAIpQLSfq-NpCCUbVG6HrwUkTOmNv8J2gcsUYTW_3Wa0PObjezsMAmg/formResponse'
 
 values = {
             # What is your full name? 
@@ -30,21 +42,10 @@ values = {
             # or 1194417129
             #"entry.677187119": "Game Design",
 
-            #"entry.1977811139": "Yes",
+            #"emailAddress": "jtsuchiyama@scu.edu",
+
             "entry.321941539": "Yes",
+            #"entry.321941539": "Yes",
         }
-
-def send_attendance(url, data):
-    """It takes google form url which is to be submitted and also data which is a list of data to be submitted in the form iteratively."""
-
-    try:
-        requests.post(url, data)
-        print("Form Submitted.")
-        time.sleep(5)
-    except:
-        print("Error Occured!")
-
-#url = 'https://docs.google.com/forms/d/e/1FAIpQLSeNP1YoUEjgucQggxYWmVPVeHMBmTuBA3FKRijpuJXvjMfn5Q/viewform'
-url = 'https://docs.google.com/forms/d/e/1FAIpQLSfq-NpCCUbVG6HrwUkTOmNv8J2gcsUYTW_3Wa0PObjezsMAmg/viewform'
 
 send_attendance(url, values)
